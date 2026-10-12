@@ -19,11 +19,74 @@
   },
   {
     "id": "txn_3",
-    "description": "Cab fair",
+    "description": "Cab fare",
     "amount": 8.9,
     "category": "Transport",
     "date": "2026-09-20",
     "createdAt": "2026-09-20T08:00:00.000Z",
     "updatedAt": "2026-09-20T08:00:00.000Z"
+  },
+  {
+    "id": "txn_4",
+    "description": "Coffee coffee with the girls",
+    "amount": 0.01,
+    "category": "Entertainment",
+    "date": "2024-02-29",
+    "createdAt": "2024-02-29T15:00:00.000Z",
+    "updatedAt": "2024-02-29T15:00:00.000Z"
+  },
+  {
+    "id": "txn_5",
+    "description": "Mom's \"birthday\" gift",
+    "amount": 65000,
+    "category": "Other",
+    "date": "2026-05-25",
+    "createdAt": "2026-05-25T18:00:00.000Z",
+    "updatedAt": "2026-05-25T18:00:00.000Z"
+  },
+  {
+    "id": "txn_6",
+    "description": "Dinner at the Italian sun restaurant",
+    "amount": 250000,
+    "category": "Food",
+    "date": "2026-05-25",
+    "createdAt": "2026-05-25T19:00:00.000Z",
+    "updatedAt": "2026-05-25T19:00:00.000Z"
+  },
+  {
+    "id": "txn_7",
+    "description": "Monthly skateboard club membership",
+    "amount": 30,
+    "category": "Fun-Fit",
+    "date": "2026-10-11",
+    "createdAt": "2026-10-11T08:00:00.000Z",
+    "updatedAt": "2026-10-11T08:00:00.000Z"
+  },
+  {
+    "id": "txn_8",
+    "description": "Concert tickets to go see Sondae at the BK Arena",
+    "amount": 120,
+    "category": "Entertainment",
+    "date": "2026-10-01",
+    "createdAt": "2026-10-01T20:00:00.000Z",
+    "updatedAt": "2026-10-01T20:00:00.000Z"
+  },
+  {
+    "id": "txn_9",
+    "description": "Shopping at Home Market",
+    "amount": 75.5,
+    "category": "Shopping",
+    "date": "2026-09-28",
+    "createdAt": "2026-09-28T14:00:00.000Z",
+    "updatedAt": "2026-09-28T14:00:00.000Z"
+  },
+  {
+    "id": "txn_10",
+    "description": "Monthly gym membership fee",
+    "amount": 45,
+    "category": "Fun-Fit",
+    "date": "2026-10-05",
+    "createdAt": "2026-10-05T07:30:00.000Z",
+    "updatedAt": "2026-10-05T07:30:00.000Z"
   }
 ]
