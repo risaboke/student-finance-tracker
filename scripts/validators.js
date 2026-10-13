@@ -4,7 +4,7 @@ export const rules = {
         message: "Give your transaction a clear description, between 3 and 100 characters. This helps you remember what you spent your money on."
     },
     amount: {
-    pattern:
+    pattern: /^(?!0+$)(?:0|[1-9]\d*)(?:\.\d{1,2})?$/.
     message:
     },
     category: {
@@ -12,8 +12,8 @@ export const rules = {
     message:
     },
     date: {
-    pattern:
-    message:
+    pattern: /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+    message: "Use the format YYYY-MM-DD."
     },
     duplicateWord: {
     pattern:
