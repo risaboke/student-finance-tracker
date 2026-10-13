@@ -36,6 +36,20 @@
         <section id="records" aria-labelledby="records-title">
             <h2 id="records-title">Records</h2>
             <p>Here you can view and manage your financial records.</p>
+            <div class="table-wrap">
+                <table>
+                    <caption>Your transactions</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Description</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="records-body"></tbody>
+                </table>
+            </div>
         </section>
 
         <section id="add" aria-labelledby="add-title">
@@ -81,7 +95,6 @@
     </main>
 
     <footer>
-        <p>Contact us at <a href="mailto:r.isaboke@alustudent.com">r.isaboke@alustudent.com</a></p>
         <p>&copy; 2026 Student Finance Tracker. All rights reserved.</p>
     </footer>
     <script type="module" src="scripts/form.js"></script>

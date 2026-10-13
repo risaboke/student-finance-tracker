@@ -9,6 +9,7 @@ const categoryInput = document.getElementById('category');
 const categoryError = document.getElementById('category-error');
 const dateInput = document.getElementById('date');
 const dateError = document.getElementById('date-error');
+const recordsBody = document.getElementById('records-body');
 
 let records = [];
 function createRecord() {
@@ -101,6 +102,27 @@ function handleDateTyping() {
 }
 dateInput.addEventListener('input', handleDateTyping);
 
+function renderTable() {
+    recordsBody.innerHTML = '';
+    for (let i = 0; i < records.length; i++) {
+        const record = records[i];
+        const row = document.createElement('tr');
+        const descriptionCell = document.createElement('td');
+        const amountCell = document.createElement('td');
+        const categoryCell = document.createElement('td')
+        const dateCell = document.createElement('td');
+        descriptionCell.textContent = record.description;
+        amountCell.textContent= record.amount;
+        categoryCell.textContent = record.category;
+        dateCell.textContent = record.date;
+        row.appendChild(descriptionCell);
+        row.appendChild(amountCell);
+        row.appendChild(categoryCell);
+        row.appendChild(dateCell);
+        recordsBody.appendChild(row);
+    }
+}
+
 function clearForm() {
     form.reset();
     descriptionError.textContent = '';
@@ -119,7 +141,7 @@ function handleSubmit(event) {
     if (amountPerf === true && descriptionPerf === true && categoryPerf === true && datePerf === true) {
         const newRecord = createRecord();
         records.push(newRecord);
-        console.log(records);
+        renderTable();
         clearForm();
     } else {
         console.log('Your form is invalid');
