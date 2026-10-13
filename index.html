@@ -53,7 +53,17 @@
                 </div>
                 <div>
                     <label for="category">Category</label>
-                    <input type="text" id="category" name="category" aria-describedby="category-error">
+                    <input type="text" id="category" name="category" list="category-list" aria-describedby="category-error">
+                    <datalist id="category-list">
+                        <option value="Food-Drinks">
+                        <option value="Transportation">
+                        <option value="Entertainment">
+                        <option value="Books">
+                        <option value="Fun-Fit">
+                        <option value="Shopping">
+                        <option value="Utilities">
+                        <option value="Other">
+                    </datalist>
                     <span id="category-error" class="error" aria-live="polite"></span>
                 </div>
                 <div>

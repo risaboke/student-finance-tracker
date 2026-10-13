@@ -3,7 +3,7 @@
     "id": "txn_1",
     "description": "Lunch at kivu noir",
     "amount": 22.5,
-    "category": "Food",
+    "category": "Food-Drinks",
     "date": "2026-09-25",
     "createdAt": "2026-09-25T12:00:00.000Z",
     "updatedAt": "2026-09-25T12:00:00.000Z"
@@ -21,7 +21,7 @@
     "id": "txn_3",
     "description": "Cab fare",
     "amount": 8.9,
-    "category": "Transport",
+    "category": "Transportation",
     "date": "2026-09-20",
     "createdAt": "2026-09-20T08:00:00.000Z",
     "updatedAt": "2026-09-20T08:00:00.000Z"
@@ -48,7 +48,7 @@
     "id": "txn_6",
     "description": "Dinner at the Italian sun restaurant",
     "amount": 250000,
-    "category": "Food",
+    "category": "Food-Drinks",
     "date": "2026-05-25",
     "createdAt": "2026-05-25T19:00:00.000Z",
     "updatedAt": "2026-05-25T19:00:00.000Z"
