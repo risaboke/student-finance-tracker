@@ -35,13 +35,13 @@ form.addEventListener('submit', handleSubmit);
 function validateDescription() {
     const text = descriptionInput.value;
     const matchesRule = rules.description.pattern.test(text);
-    const hasRepeateWord = rules.duplicateWord.pattern.test(text);
+    const hasRepeatedWord = rules.duplicateWord.pattern.test(text);
     let isValid = true;
 
     if (matchesRule === false) {
         descriptionError.textContent = rules.description.message;
         isValid = false;
-    } else if (hasRepeateWord === true) {
+    } else if (hasRepeatedWord === true) {
         descriptionError.textContent = rules.duplicateWord.message;
     } else {
         descriptionError.textContent = '';
