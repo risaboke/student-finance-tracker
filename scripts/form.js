@@ -10,6 +10,25 @@ const categoryError = document.getElementById('category-error');
 const dateInput = document.getElementById('date');
 const dateError = document.getElementById('date-error');
 
+let records = [];
+function createRecord() {
+    const rightNow = new Date();
+    const timestamp = rightNow.toISOString();
+    const milliseconds = Date.now();
+    const newId = 'txn_' + milliseconds;
+    const amountAsNumber = Number(amountInput.value);
+    const newRecord = {
+        id: newId,
+        description: descriptionInput.value,
+        amount: amountAsNumber,
+        category: categoryInput.value,
+        date: dateInput.value,
+        createdAt: timestamp,
+        updatedAt: timestamp
+    };
+    return newRecord;
+}
+
 function validateDescription() {
     const text = descriptionInput.value;
     const matchesRule = rules.description.pattern.test(text);
@@ -82,6 +101,14 @@ function handleDateTyping() {
 }
 dateInput.addEventListener('input', handleDateTyping);
 
+function clearForm() {
+    form.reset();
+    descriptionError.textContent = '';
+    amountError.textContent = '';
+    categoryError.textContent = '';
+    dateError.textContent = '';
+}
+
 function handleSubmit(event) {
     event.preventDefault();
     const amountPerf = validateAmount();
@@ -90,7 +117,10 @@ function handleSubmit(event) {
     const datePerf = validateDate();
 
     if (amountPerf === true && descriptionPerf === true && categoryPerf === true && datePerf === true) {
-        console.log('Your form is valid and ready to save');
+        const newRecord = createRecord();
+        records.push(newRecord);
+        console.log(records);
+        clearForm();
     } else {
         console.log('Your form is invalid');
     }
