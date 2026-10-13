@@ -2,6 +2,7 @@
     --soft-linen: #e7e0d6;
     --lemon-tart: #e6d389;
     --dry-sage: #aea989;
+    --orange: #fb5607;
     --smoked-mauve: #68525c;
     --violet-dusk: #502d55;
     --midnight-violet: #261732;
@@ -71,4 +72,9 @@ nav a:hover {
     max-width: 960px;
     margin: 0 auto;
   }
+}
+.error {
+    display: block;
+    color: var(--orange);
+    font-size: 0.9rem;
 }

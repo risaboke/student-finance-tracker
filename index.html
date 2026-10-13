@@ -39,6 +39,29 @@
 
         <section id="add" aria-labelledby="add-title">
             <h2 id="add-title">Add / Edit Transaction</h2>
+            <form id="transaction-form" novalidate>
+                <div>
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" aria-describedby="description-error">
+                    <span id="description-error" class="error" aria-live="polite"></span>
+                </div>
+                <div>
+                    <label for="amount">Amount</label>
+                    <input type="text" id="amount" name="amount" aria-describedby="amount-error">
+                    <span id="amount-error" class="error" aria-live="polite"></span>
+                </div>
+                <div>
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category" aria-describedby="category-error">
+                    <span id="category-error" class="error" aria-live="polite"></span>
+                </div>
+                <div>
+                    <label for="date">Date</label>
+                    <input type="text" id="date" name="date" placeholder="YYYY-MM-DD" aria-describedby="date-error">
+                    <span id="date-error" class="error" aria-live="polite"></span>
+                </div>
+                <button type="submit">Save transaction</button>
+            </form>
         </section>
         
         <section id="settings" aria-labelledby="settings-title">
