@@ -1,22 +1,22 @@
 export const rules = {
     description: {
         pattern: /^(?! )(?!.*  )[a-zA-Z0-9_.,'&()\/\- ]{3,100}(?<! )$/,
-        message: "Give your transaction a clear description, between 3 and 100 characters. This helps you remember what you spent your money on."
+        message: "Give your transaction a clear description so you can remember what the money went towards."
     },
     amount: {
-    pattern: /^(?!0+$)(?:0|[1-9]\d*)(?:\.\d{1,2})?$/.
-    message:
+    pattern: /^(?!0+$)(?:0|[1-9]\d*)(?:\.\d{1,2})?$/,
+    message: "Enter a valid amount, e.g., 10.00 or 109.09. Every cent counts!)."
     },
     category: {
-    pattern:
-    message:
+    pattern: /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/,
+    message: "Choose a category that best describes where your money went."
     },
     date: {
     pattern: /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
-    message: "Use the format YYYY-MM-DD."
+    message: "Enter the date as YYYY-MM-DD, e.g., 2026-01-15."
     },
     duplicateWord: {
-    pattern:
-    message:
+    pattern: /\b(\w+)\s+\1\b/i,
+    message: "Looks like you repeated a word. Give that description another look!"
     }
 };
