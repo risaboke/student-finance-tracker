@@ -90,3 +90,12 @@ th, td {
     text-align: left;
     border-bottom: 1px solid var(--dry-sage);
 }
+th button {
+    background: none;
+    border: none;
+    font: inherit;
+    font-weight: bold;
+    color: var(--midnight-violet);
+    cursor: pointer;
+    padding: 0;
+}

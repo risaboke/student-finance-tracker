@@ -10,8 +10,15 @@ const categoryError = document.getElementById('category-error');
 const dateInput = document.getElementById('date');
 const dateError = document.getElementById('date-error');
 const recordsBody = document.getElementById('records-body');
+const sortDescriptionButton = document.getElementById('sort-description');
+const sortAmountButton = document.getElementById('sort-amount');
+const sortCategoryButton = document.getElementById('sort-category');
+const sortDateButton = document.getElementById('sort-date');
 
 let records = [];
+let sortField = '';
+let sortDirection = 'asc';
+
 function createRecord() {
     const rightNow = new Date();
     const timestamp = rightNow.toISOString();
@@ -101,6 +108,51 @@ function handleDateTyping() {
     validateDate();
 }
 dateInput.addEventListener('input', handleDateTyping);
+
+function compareRecords(a, b) {
+    let result = 0;
+    if (sortField === 'amount') {
+        result = a.amount - b.amount;
+    } else {
+        result = a[sortField].localeCompare(b[sortField]);
+    }
+    if (sortDirection === 'desc') {
+        result = result * -1;
+    }
+    return result;
+}
+function sortRecords(field) {
+    if (sortField === field) {
+        if (sortDirection === 'asc') {
+            sortDirection = 'desc';
+        } else {
+            sortDirection = 'asc';
+        }
+    } else {
+        sortField = field;
+        sortDirection = 'asc';
+    }
+    records.sort(compareRecords);
+    renderTable();
+}
+
+function handleSortDescription() {
+    sortRecords('description');
+}
+function handleSortAmount() {
+    sortRecords('amount');
+}
+function handleSortDate() {
+    sortRecords('date');
+}
+sortDescriptionButton.addEventListener('click', handleSortDescription);
+sortAmountButton.addEventListener('click', handleSortAmount);
+sortDateButton.addEventListener('click', handleSortDate);
+
+function handleSortCategory() {
+    sortRecords('category');
+}
+sortCategoryButton.addEventListener('click', handleSortCategory);
 
 function renderTable() {
     recordsBody.innerHTML = '';
