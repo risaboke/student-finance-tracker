@@ -109,7 +109,7 @@ function renderTable() {
         const row = document.createElement('tr');
         const descriptionCell = document.createElement('td');
         const amountCell = document.createElement('td');
-        const categoryCell = document.createElement('td')
+        const categoryCell = document.createElement('td');
         const dateCell = document.createElement('td');
         descriptionCell.textContent = record.description;
         amountCell.textContent= record.amount;
@@ -120,6 +120,17 @@ function renderTable() {
         row.appendChild(categoryCell);
         row.appendChild(dateCell);
         recordsBody.appendChild(row);
+    }
+}
+
+async function loadSeedData() {
+    try {
+        const response = await fetch('seed.json');
+        const seedRecords = await response.json();
+        records = seedRecords;
+        renderTable();
+    } catch (error) {
+        console.log('Could not load seed.json', error);
     }
 }
 
@@ -147,3 +158,5 @@ function handleSubmit(event) {
         console.log('Your form is invalid');
     }
 }
+
+loadSeedData();
