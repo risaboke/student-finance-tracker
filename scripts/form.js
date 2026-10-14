@@ -14,10 +14,14 @@ const sortDescriptionButton = document.getElementById('sort-description');
 const sortAmountButton = document.getElementById('sort-amount');
 const sortCategoryButton = document.getElementById('sort-category');
 const sortDateButton = document.getElementById('sort-date');
+const searchInput = document.getElementById('search-input');
+const searchCaseBox = document.getElementById('search-case');
+const searchStatus = document.getElementById('search-status');
 
 let records = [];
 let sortField = '';
 let sortDirection = 'asc';
+let searchRegex = null;
 
 function createRecord() {
     const rightNow = new Date();
@@ -154,24 +158,95 @@ function handleSortCategory() {
 }
 sortCategoryButton.addEventListener('click', handleSortCategory);
 
+function compileRegex(text, flags) {
+    let regex = null;
+    if (text!== '') {
+        try {
+            regex = new RegExp(text, flags);
+        } catch (error) {
+            regex = null;
+        }
+    }
+    return regex;
+}
+
+function recordMatchesSearch(record) {
+    if (searchRegex === null) {
+        return true;
+    }
+    const descriptionMatch = searchRegex.test(record.description);
+    const categoryMatch = searchRegex.test(record.category);
+    const dateMatch = searchRegex.test(record.date);
+    const amountMatch = searchRegex.test(String(record.amount));
+
+    return descriptionMatch || categoryMatch || dateMatch || amountMatch;
+}
+
+function handleSearch() {
+    const text = searchInput.value;
+
+    let flags = 'i';
+    if (searchCaseBox.checked === true) {
+        flags = '';
+    }
+
+    const regex = compileRegex(text, flags);
+
+    if (text !== '' && regex === null) {
+        searchStatus.textContent = 'That pattern is not valid yet. Check your brackets.';
+    } else {
+        searchStatus.textContent = '';
+    }
+    searchRegex = regex;
+    renderTable();
+} 
+searchInput.addEventListener('input', handleSearch);
+searchCaseBox.addEventListener('change', handleSearch);
+
+function fillCell(cell, value) {
+    const text = String(value);
+    let match = null;
+
+    if (searchRegex !== null) {
+        match = searchRegex.exec(text);
+    }
+    if (match === null || match[0] === '') {
+        cell.textContent = text;
+    } else {
+        const before = text.slice(0, match.index);
+        const found = match[0];
+        const after = text.slice(match.index + found.length);
+        const mark = document.createElement('mark');
+        mark.textContent = found;
+
+        cell.appendChild(document.createTextNode(before));
+        cell.appendChild(mark);
+        cell.appendChild(document.createTextNode(after));
+    }
+}
+
 function renderTable() {
     recordsBody.innerHTML = '';
     for (let i = 0; i < records.length; i++) {
         const record = records[i];
+        if (recordMatchesSearch(record) === true) {
         const row = document.createElement('tr');
         const descriptionCell = document.createElement('td');
         const amountCell = document.createElement('td');
         const categoryCell = document.createElement('td');
         const dateCell = document.createElement('td');
-        descriptionCell.textContent = record.description;
-        amountCell.textContent= record.amount;
-        categoryCell.textContent = record.category;
-        dateCell.textContent = record.date;
+        
+        fillCell(descriptionCell, record.description);
+        fillCell(amountCell, record.amount);
+        fillCell(categoryCell, record.category);
+        fillCell(dateCell, record.date);
+
         row.appendChild(descriptionCell);
         row.appendChild(amountCell);
         row.appendChild(categoryCell);
         row.appendChild(dateCell);
         recordsBody.appendChild(row);
+        }
     }
 }
 

@@ -99,3 +99,7 @@ th button {
     cursor: pointer;
     padding: 0;
 }
+mark {
+    background: var(--lemon-tart);
+    color: var(--midnight-violet);
+}
