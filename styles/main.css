@@ -103,3 +103,6 @@ mark {
     background: var(--lemon-tart);
     color: var(--midnight-violet);
 }
+td button {
+    margin-right: 0.5rem;
+}

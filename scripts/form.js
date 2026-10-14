@@ -18,11 +18,13 @@ const sortDateButton = document.getElementById('sort-date');
 const searchInput = document.getElementById('search-input');
 const searchCaseBox = document.getElementById('search-case');
 const searchStatus = document.getElementById('search-status');
+const submitButton = document.getElementById('submit-button');
 
 let records = [];
 let sortField = '';
 let sortDirection = 'asc';
 let searchRegex = null;
+let editingId = null;
 
 function createRecord() {
     const rightNow = new Date();
@@ -234,6 +236,9 @@ function deleteRecord(id) {
         }
     }
     records =remaining;
+    if (editingId === id) {
+        clearForm();
+    }
     saveRecords();
     renderTable();
 }
@@ -246,37 +251,82 @@ function handleDeleteClick(event) {
     }
 }
 
+function findRecordById(id) {
+    for (let i = 0; i < records.length; i++) {
+        if (records[i].id === id) {
+            return records[i];
+        }
+    }
+    return null;
+}
+
+function updateRecord(id) {
+    const record = findRecordById(id);
+    if (record !== null) {
+        record.description = descriptionInput.value;
+        record.amount = Number (amountInput.value);
+        record.category = categoryInput.value;
+        record.date = dateInput.value;
+        record.updatedAt = new Date().toISOString();
+    }
+}
+
+function handleEditClick(event) {
+    const id = event.target.dataset.id;
+    const record = findRecordById(id);
+    if (record !== null) {
+        descriptionInput.value = record.description;
+        amountInput.value = record.amount;
+        categoryInput.value = record.category;
+        dateInput.value = record.date;
+        editingId = id;
+        submitButton.textContent = 'Update transaction';
+        descriptionInput.focus();
+    }
+}
+
 function renderTable() {
     recordsBody.innerHTML = '';
     for (let i = 0; i < records.length; i++) {
         const record = records[i];
         if (recordMatchesSearch(record) === true) {
-        const row = document.createElement('tr');
-        const descriptionCell = document.createElement('td');
-        const amountCell = document.createElement('td');
-        const categoryCell = document.createElement('td');
-        const dateCell = document.createElement('td');
+            const row = document.createElement('tr');
+            const descriptionCell = document.createElement('td');
+            const amountCell = document.createElement('td');
+            const categoryCell = document.createElement('td');
+            const dateCell = document.createElement('td');
 
-        fillCell(descriptionCell, record.description);
-        fillCell(amountCell, record.amount);
-        fillCell(categoryCell, record.category);
-        fillCell(dateCell, record.date);
+            fillCell(descriptionCell, record.description);
+            fillCell(amountCell, record.amount);
+            fillCell(categoryCell, record.category);
+            fillCell(dateCell, record.date);
 
-        const actionsCell = document.createElement('td');
-        const deleteButton = document.createElement('button');
-        deleteButton.type = 'button';
-        deleteButton.textContent = 'Delete';
-        deleteButton.dataset.id = record.id;
-        deleteButton.setAttribute('aria-label', 'Delete' + record.description);
-        deleteButton.addEventListener('click', handleDeleteClick);
-        actionsCell.appendChild(deleteButton);
+            const actionsCell = document.createElement('td');
+            const deleteButton = document.createElement('button');
+            const actionCell = document.createElement('td');
+            deleteButton.type = 'button';
+            deleteButton.textContent = 'Delete';
+            deleteButton.dataset.id = record.id;
+            deleteButton.setAttribute('aria-label', 'Delete ' + record.description);
+            deleteButton.addEventListener('click', handleDeleteClick);
 
-        row.appendChild(descriptionCell);
-        row.appendChild(amountCell);
-        row.appendChild(categoryCell);
-        row.appendChild(dateCell);
-        row.appendChild(actionsCell);
-        recordsBody.appendChild(row);
+            const editButton = document.createElement('button');
+            editButton.type = 'button';
+            editButton.textContent = 'Edit';
+            editButton.dataset.id = record.id;
+            editButton.setAttribute('aria-label', 'Edit ' + record.description);
+            editButton.addEventListener('click', handleEditClick);
+
+            actionCell.appendChild(editButton);
+            actionsCell.appendChild(deleteButton);
+
+            row.appendChild(descriptionCell);
+            row.appendChild(amountCell);
+            row.appendChild(categoryCell);
+            row.appendChild(dateCell);
+            row.appendChild(actionCell);
+            row.appendChild(actionsCell);
+            recordsBody.appendChild(row);
         }
     }
 }
@@ -299,6 +349,8 @@ function clearForm() {
     amountError.textContent = '';
     categoryError.textContent = '';
     dateError.textContent = '';
+    editingId = null;
+    submitButton.textContent = 'Save transaction';
 }
 
 function handleSubmit(event) {
@@ -309,8 +361,12 @@ function handleSubmit(event) {
     const datePerf = validateDate();
 
     if (amountPerf === true && descriptionPerf === true && categoryPerf === true && datePerf === true) {
-        const newRecord = createRecord();
-        records.push(newRecord);
+        if (editingId === null) {
+            const newRecord = createRecord();
+            records.push(newRecord);
+        } else {
+            updateRecord(editingId);
+        }
         saveRecords();
         renderTable();
         clearForm();
