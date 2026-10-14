@@ -226,6 +226,26 @@ function fillCell(cell, value) {
     }
 }
 
+function deleteRecord(id) {
+    const remaining = [];
+    for (let i = 0; i < records.length; i++) {
+        if (records[i].id !== id) {
+            remaining.push(records[i]);
+        }
+    }
+    records =remaining;
+    saveRecords();
+    renderTable();
+}
+
+function handleDeleteClick(event) {
+    const id = event.target.dataset.id;
+    const sure = confirm('Would you like to delete this record?');
+    if (sure === true) {
+        deleteRecord(id);
+    }
+}
+
 function renderTable() {
     recordsBody.innerHTML = '';
     for (let i = 0; i < records.length; i++) {
@@ -242,10 +262,20 @@ function renderTable() {
         fillCell(categoryCell, record.category);
         fillCell(dateCell, record.date);
 
+        const actionsCell = document.createElement('td');
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.textContent = 'Delete';
+        deleteButton.dataset.id = record.id;
+        deleteButton.setAttribute('aria-label', 'Delete' + record.description);
+        deleteButton.addEventListener('click', handleDeleteClick);
+        actionsCell.appendChild(deleteButton);
+
         row.appendChild(descriptionCell);
         row.appendChild(amountCell);
         row.appendChild(categoryCell);
         row.appendChild(dateCell);
+        row.appendChild(actionsCell);
         recordsBody.appendChild(row);
         }
     }
