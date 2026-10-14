@@ -1,5 +1,6 @@
 import {rules} from './validators.js';
 
+const STORAGE_KEY = 'finance-tracker:records';
 const form = document.getElementById('transaction-form');
 const descriptionInput = document.getElementById('description');
 const descriptionError = document.getElementById('description-error');
@@ -235,7 +236,7 @@ function renderTable() {
         const amountCell = document.createElement('td');
         const categoryCell = document.createElement('td');
         const dateCell = document.createElement('td');
-        
+
         fillCell(descriptionCell, record.description);
         fillCell(amountCell, record.amount);
         fillCell(categoryCell, record.category);
@@ -255,6 +256,7 @@ async function loadSeedData() {
         const response = await fetch('seed.json');
         const seedRecords = await response.json();
         records = seedRecords;
+        saveRecords();
         renderTable();
     } catch (error) {
         console.log('Could not load seed.json', error);
@@ -279,6 +281,7 @@ function handleSubmit(event) {
     if (amountPerf === true && descriptionPerf === true && categoryPerf === true && datePerf === true) {
         const newRecord = createRecord();
         records.push(newRecord);
+        saveRecords();
         renderTable();
         clearForm();
     } else {
@@ -286,4 +289,37 @@ function handleSubmit(event) {
     }
 }
 
-loadSeedData();
+async function startApp() {
+    const savedList = loadSavedRecords();
+    if (savedList !== null) {
+        records = savedList;
+        renderTable();
+    } else {
+        await loadSeedData();
+    }
+}
+
+function saveRecords() {
+    try {
+        const text = JSON.stringify(records);
+        localStorage.setItem(STORAGE_KEY, text);
+    } catch (error) {
+        console.log('Could not save records', error);
+    }
+}
+
+function loadSavedRecords() {
+    try {
+        const text = localStorage.getItem(STORAGE_KEY);
+        if (text === null) {
+            return null;
+        }
+        const savedList = JSON.parse(text);
+        return savedList;
+    } catch (error) {
+        console.log('Could not read saved records', error);
+        return null;
+    }
+}
+
+startApp();
