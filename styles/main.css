@@ -151,3 +151,10 @@ form button {
 #settings-status {
   margin: 0 0 1rem 0;
 }
+.data-box {
+  margin-top: 1.5rem;
+}
+.data-box label {
+  display: block;
+  margin-top: 0.75rem;
+}

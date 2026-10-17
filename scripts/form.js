@@ -42,6 +42,9 @@ const rateIIError = document.getElementById('rateII-error');
 const settingsStatus = document.getElementById('settings-status');
 const currencyNote = document.getElementById('currency-note');
 const SETTINGS_KEY = 'finance-tracker: settings';
+const exportButton = document.getElementById('export-button');
+const importInput = document.getElementById('import-input');
+const dataStatus = document.getElementById('data-status');
 
 let records = [];
 let sortField = '';
@@ -583,6 +586,72 @@ function  handleSettingsSubmit(event) {
     }
 }
 settingsForm.addEventListener('submit', handleSettingsSubmit);
+
+function exportRecords() {
+    const text = JSON.stringify(records, null, 2);
+    const file = new Blob([text], { type: 'application/json'});
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'finance-records.json';
+    link.click();
+    URL.revokeObjectURL(url);
+    dataStatus.textContent = 'Exported ' + records.length + ' records.';
+}
+exportButton.addEventListener('click', exportRecords);
+
+function checkImportedRecord(record) {
+let problem = '';
+if (record.id === undefined) {
+    problem = 'has no id'
+} else if (record.description === undefined || record.description === '') {
+    problem = 'has no description';
+}else if (typeof record.amount !== 'number' || record.amount < 0) {
+    problem = 'has an amount that is not a valid number';
+} else if (record.category === undefined || rules.category.pattern.test(record.category) === false) {
+    problem = 'has an invalid category';
+} else if (record.date === undefined || rules.date.pattern.test(record.date) === false) {
+    problem = 'has a date that is not in the format YYYY-MM-DD';
+}
+return problem;
+}
+
+async function handleImport(event) {
+    const file = event.target.files[0];
+    if (file !== undefined) {
+        try {
+            const text = await file.text();
+            const imported = JSON.parse(text);
+            let problem = '';
+            if (Array.isArray(imported) === false) {
+                problem = 'The file must contain a list of records.';
+            } else {
+                for (let i = 0; i < imported.length; i++) {
+                    const reason = checkImportedRecord(imported[i]);
+                    //first problem 
+                    if (reason !== '' && problem === '') {
+                        problem = 'Record ' + (i + 1) + ' ' + reason + '.';
+                        break;
+                    }
+                }
+            }
+                if (problem === '') {
+                    records = imported;
+                    saveRecords();
+                    renderTable();
+                    updateDashboard();
+                    clearForm();
+                    dataStatus.textContent = 'Imported ' + imported.length + ' records.';
+                } else {
+                    dataStatus.textContent = 'Nothing was changed.';
+                } 
+            } catch (error) {
+                dataStatus.textContent = 'Import has failed because that file is not vaild JSON. Nothing was changed';
+            }
+            importInput.value = '';
+        }
+    }
+importInput.addEventListener('change', handleImport);
 
 function renderTable() {
     recordsBody.innerHTML = '';

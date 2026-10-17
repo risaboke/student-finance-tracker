@@ -145,6 +145,13 @@
                 <button type="submit">Save settings</button>
                 <p id="settings-status" aria-live="polite"></p>
             </form>
+            <div class="data-box">
+                <h3>Backup</h3>
+                <button type="button" id="export-button">Export records (JSON)</button>
+                <label for="import-input">Import records (JSON file)</label>
+                <input type="file" id="import-input" accept=".json,application/json">
+                <p id="data-status" aria-live="polite"></p>
+            </div>
         </section>
     </main>
 
