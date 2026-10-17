@@ -19,12 +19,22 @@ const searchInput = document.getElementById('search-input');
 const searchCaseBox = document.getElementById('search-case');
 const searchStatus = document.getElementById('search-status');
 const submitButton = document.getElementById('submit-button');
+const statCount = document.getElementById('stat-count');
+const statTotal = document.getElementById('stat-total');
+const statTop = document.getElementById('stat-top');
+const statWeek = document.getElementById('stat-week');
+const capInput = document.getElementById('cap-input');
+const capError = document.getElementById('cap-error');
+const capPolite = document.getElementById('cap-polite');
+const capAssertive = document.getElementById('cap-assertive');
+const CAP_KEY = 'finance-tracker:cap';
 
 let records = [];
 let sortField = '';
 let sortDirection = 'asc';
 let searchRegex = null;
 let editingId = null;
+let spendingCap = null;
 
 function createRecord() {
     const rightNow = new Date();
@@ -241,6 +251,7 @@ function deleteRecord(id) {
     }
     saveRecords();
     renderTable();
+    updateDashboard();
 }
 
 function handleDeleteClick(event) {
@@ -285,48 +296,181 @@ function handleEditClick(event) {
     }
 }
 
+//Dashboard: is this within the lat seven days?
+function isInLast7Days(dateText) {
+    const recordDate = new Date(dateText);
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 7);
+
+    let isRecent = false;
+    
+    if (recordDate >= sevenDaysAgo && recordDate <= today) {
+        isRecent = true;
+    }
+    return isRecent;
+}
+
+// this is to add up everything I've spent
+function calculateTotal() {
+    let total = 0;
+    for (let i = 0; i < records.length; i++) {
+        total = total + records[i].amount;
+    }
+    return total;
+} 
+//to find the category spent on the most
+function findTopCategory() {
+    const categoryTotals = {};
+    for (let i = 0; i< records.length; i++) {
+        const categoryName = records[i].category.toLowerCase();
+        //starts at zero 1e
+        if (categoryTotals[categoryName] === undefined) {
+            categoryTotals[categoryName] = 0;
+        }
+            categoryTotals[categoryName] = categoryTotals[categoryName] + records[i].amount;
+    }
+    let topName = 'None';
+    let topAmount = 0;
+    //allocate the biggest total
+    for (const categoryName in categoryTotals) {
+        if (categoryTotals[categoryName] > topAmount) {
+            topAmount = categoryTotals[categoryName];
+            topName = categoryName;
+        }
+    }
+    return topName;
+}
+
+function calculateWeeklyTotal() {
+    let weeklyTotal = 0;
+    for (let i = 0; i < records.length; i++) {
+        const recent = isInLast7Days(records[i].date);
+        if (recent === true) {
+            weeklyTotal = weeklyTotal + records[i].amount;
+        }
+    }
+    return weeklyTotal;
+}
+
+function updateCapMessage(total) {
+    let politeText = '';
+    let assertiveText = '';
+
+    if (spendingCap !== null && total > spendingCap) {
+            const over = total - spendingCap;
+            assertiveText = 'Over your cap by ' + over.toFixed(2) + '.';
+        } else if (spendingCap !== null) {
+            const left = spendingCap - total;
+            politeText = 'You have ' + left.toFixed(2) + ' left under your cap.';
+        }
+    //shouldn't repeat
+    if (capPolite.textContent !== politeText) {
+        capPolite.textContent = politeText;
+    }
+    if (capAssertive.textContent !== assertiveText) {
+        capAssertive.textContent = assertiveText;
+    }
+}
+
+function updateDashboard() {
+    const total = calculateTotal();
+    const topCategory = findTopCategory();
+    const weeklyTotal = calculateWeeklyTotal();
+
+    statCount.textContent = records.length;
+    statTotal.textContent = total.toFixed(2);
+    statTop.textContent = topCategory;
+    statWeek.textContent = weeklyTotal.toFixed(2);
+
+    updateCapMessage(total);
+}
+
+function saveCap() {
+    try {
+        if (spendingCap === null) {
+            localStorage.removeItem(CAP_KEY);
+        } else {
+            localStorage.setItem(CAP_KEY, String(spendingCap));
+        }
+    } catch (error) {
+        console.log('Could not save cap', error);
+    }
+}
+
+function loadCap() {
+    try {
+        const text = localStorage.getItem(CAP_KEY);
+        if (text !== null) {
+            spendingCap = Number(text)
+            capInput.value = text;
+        }
+    } catch (error) {
+        console.log('Could not read cap', error);
+    }
+}
+
+function handleCapInput() {
+    const text = capInput.value;
+    const matchRule = rules.amount.pattern.test(text);
+    let shouldUpdate = true;
+    if (text === '') {
+        spendingCap = null;
+        capError.textContent = '';
+    }
+    else if (matchRule === false) {
+        capError.textContent = rules.amount.message;
+        shouldUpdate = false;
+    }
+    else {
+        spendingCap = Number(text);
+        capError.textContent = '';
+    }
+    if (shouldUpdate === true) {
+        saveCap();
+        updateDashboard();
+    }
+}
+capInput.addEventListener('input', handleCapInput);
+
 function renderTable() {
     recordsBody.innerHTML = '';
     for (let i = 0; i < records.length; i++) {
         const record = records[i];
         if (recordMatchesSearch(record) === true) {
-            const row = document.createElement('tr');
-            const descriptionCell = document.createElement('td');
-            const amountCell = document.createElement('td');
-            const categoryCell = document.createElement('td');
-            const dateCell = document.createElement('td');
+        const row = document.createElement('tr');
+        const descriptionCell = document.createElement('td');
+        const amountCell = document.createElement('td');
+        const categoryCell = document.createElement('td');
+        const dateCell = document.createElement('td');
 
-            fillCell(descriptionCell, record.description);
-            fillCell(amountCell, record.amount);
-            fillCell(categoryCell, record.category);
-            fillCell(dateCell, record.date);
+        fillCell(descriptionCell, record.description);
+        fillCell(amountCell, record.amount);
+        fillCell(categoryCell, record.category);
+        fillCell(dateCell, record.date);
 
-            const actionsCell = document.createElement('td');
-            const deleteButton = document.createElement('button');
-            const actionCell = document.createElement('td');
-            deleteButton.type = 'button';
-            deleteButton.textContent = 'Delete';
-            deleteButton.dataset.id = record.id;
-            deleteButton.setAttribute('aria-label', 'Delete ' + record.description);
-            deleteButton.addEventListener('click', handleDeleteClick);
+        const actionsCell = document.createElement('td');
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.textContent = 'Delete';
+        deleteButton.dataset.id = record.id;
+        deleteButton.setAttribute('aria-label', 'Delete ' + record.description);
+        deleteButton.addEventListener('click', handleDeleteClick);
+        const editButton = document.createElement('button');
+        editButton.type = 'button';
+        editButton.textContent = 'Edit';
+        editButton.dataset.id = record.id;
+        editButton.setAttribute('aria-label', 'Edit' + record.description);
+        editButton.addEventListener('click', handleEditClick);
+        actionsCell.appendChild(editButton);
+        actionsCell.appendChild(deleteButton);
 
-            const editButton = document.createElement('button');
-            editButton.type = 'button';
-            editButton.textContent = 'Edit';
-            editButton.dataset.id = record.id;
-            editButton.setAttribute('aria-label', 'Edit ' + record.description);
-            editButton.addEventListener('click', handleEditClick);
-
-            actionCell.appendChild(editButton);
-            actionsCell.appendChild(deleteButton);
-
-            row.appendChild(descriptionCell);
-            row.appendChild(amountCell);
-            row.appendChild(categoryCell);
-            row.appendChild(dateCell);
-            row.appendChild(actionCell);
-            row.appendChild(actionsCell);
-            recordsBody.appendChild(row);
+        row.appendChild(descriptionCell);
+        row.appendChild(amountCell);
+        row.appendChild(categoryCell);
+        row.appendChild(dateCell);
+        row.appendChild(actionsCell);
+        recordsBody.appendChild(row);
         }
     }
 }
@@ -338,6 +482,7 @@ async function loadSeedData() {
         records = seedRecords;
         saveRecords();
         renderTable();
+        updateDashboard();
     } catch (error) {
         console.log('Could not load seed.json', error);
     }
@@ -369,19 +514,10 @@ function handleSubmit(event) {
         }
         saveRecords();
         renderTable();
+        updateDashboard();
         clearForm();
     } else {
         console.log('Your form is invalid');
-    }
-}
-
-async function startApp() {
-    const savedList = loadSavedRecords();
-    if (savedList !== null) {
-        records = savedList;
-        renderTable();
-    } else {
-        await loadSeedData();
     }
 }
 
@@ -408,4 +544,15 @@ function loadSavedRecords() {
     }
 }
 
+async function startApp() {
+    loadCap();
+    const savedList = loadSavedRecords();
+    if (savedList !== null) {
+        records = savedList;
+        renderTable();
+        updateDashboard();
+    } else {
+        await loadSeedData();
+    }
+}
 startApp();

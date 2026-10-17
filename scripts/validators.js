@@ -5,7 +5,7 @@ export const rules = {
     },
     amount: {
     pattern: /^(?!0+$)(?:0|[1-9]\d*)(?:\.\d{1,2})?$/,
-    message: "Enter a valid amount, e.g., 10.00 or 109.09. Every cent counts!)."
+    message: "Enter a valid amount, e.g., 10.00 or 109.09. Every cent counts!."
     },
     category: {
     pattern: /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/,

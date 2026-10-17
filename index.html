@@ -31,6 +31,19 @@
         <section id="dashboard" aria-labelledby="dashboard-title">
             <h2 id="dashboard-title">Dashboard</h2>
             <p>This is your financial overview and key metrics.</p>
+            <dl class="stats">
+                <div><dt>Total records</dt><dd id="stat-count">0</dd></div>
+                <div><dt>Total spent</dt><dd id="stat-total">0.00</dd></div>
+                <div><dt>Top category</dt><dd id="stat-top">None yet</dd></div>
+                <div><dt>Last 7 days</dt><dd id="stat-week">0.00</dd></div>
+            </dl>
+            <div class="cap-box">
+                <label for="cap-input">Spending cap</label>
+                <input type="text" id="cap-input" inputmode="decimal" aria-describedby="cap-error">
+                <span id="cap-error" class="error" aria-live="polite"></span>
+                <p id="cap-polite" aria-live="polite"></p>
+                <p id="cap-assertive" aria-live="assertive"></p>
+            </div>
         </section>
 
         <section id="records" aria-labelledby="records-title">
