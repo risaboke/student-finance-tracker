@@ -129,3 +129,25 @@ td button {
     color: var(--orange);
     font-weight: bold;
 }
+form div,
+.cap.box {
+  margin-bottom: 0.75rem;
+}
+form label,
+.cap-box label {
+  display: block;
+}
+form input[type="text"],
+.cap-box input {
+  width: 100%;
+  max-width: 320px;
+  padding: 0.4rem;
+}
+form button {
+  padding:0.4rem 0.8rem;
+  cursor: pointer;
+}
+#currency-note,
+#settings-status {
+  margin: 0 0 1rem 0;
+}

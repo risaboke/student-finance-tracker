@@ -15,6 +15,14 @@ export const rules = {
     pattern: /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
     message: "Enter the date as YYYY-MM-DD, e.g., 2026-01-15."
     },
+    currency: {
+        pattern: /^[A-Z]{3}$/,
+        message: "Use a 3-letter currency code, e.g., KES"
+    },
+    rate: {
+        pattern:/^(0|[1-9]\d*)(\.\d{1,6})?%/,
+        message: "Enter a number like 0.82 or 1230.4"
+    },
     duplicateWord: {
     pattern: /\b(\w+)\s+\1\b/i,
     message: "Looks like you repeated a word. Give that description another look!"

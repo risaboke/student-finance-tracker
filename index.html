@@ -36,6 +36,7 @@
                 <div><dt>Total spent</dt><dd id="stat-total">0.00</dd></div>
                 <div><dt>Top category</dt><dd id="stat-top">None yet</dd></div>
                 <div><dt>Last 7 days</dt><dd id="stat-week">0.00</dd></div>
+                <p id="currency-note"></p>
             </dl>
             <div class="cap-box">
                 <label for="cap-input">Spending cap</label>
@@ -44,6 +45,8 @@
                 <p id="cap-polite" aria-live="polite"></p>
                 <p id="cap-assertive" aria-live="assertive"></p>
             </div>
+            <!--for rwf, ksh, usd-->
+            <p id="cuurency-note"></p>
         </section>
 
         <section id="records" aria-labelledby="records-title">
@@ -112,6 +115,37 @@
         
         <section id="settings" aria-labelledby="settings-title">
             <h2 id="settings-title">Settings</h2>
+            <!--type better comment-->
+            <form id="settings-form">
+                <p>Your records are stored in the Rwandan Francs currency. For the other currencies, type how many you get for 1 unit of the base.</p>
+                <div>
+                    <label for="base-code">Rwanda (RWF) currency</label>
+                    <input type="text" id="base-code" aria-describedby="base-code-error">
+                    <span id="base-code-error" class="error" aria-live="polite"></span>
+                </div>
+                <div>
+                    <label for="codeI">Kenya currency</label>
+                    <input type="text" id="codeI" aria-describedby="codeI-error">
+                    <span id="codeI-error" class="error" aria-live="polite"></span>
+                </div>
+                <div>
+                    <label for="rateI">Rate for Kenya (KES) currency</label>
+                    <input type="text" id="rateI" inputmode="decimal" aria-describedby="rateI-error">
+                    <span id="rateI-error" class="error" aria-live="polite"></span>
+                </div>
+                <div>
+                    <label for="codeII">United States (USD) currency</label>
+                    <input type="text" id="codeII" aria-describedby="codeII-error">
+                    <span id="codeII-error" class="error" aria-live="polite"></span>
+                </div>
+                <div>
+                    <label for="rateII">Rate for USD currency</label>
+                    <input type="text" id="rateII" inputmode="decimal" aria-describedby="rateII-error">
+                    <span id="rateII-error" class="error" aria-live="polite"></span>
+                </div>
+                <button type="submit">Save settings</button>
+                <p id="settings-status" aria-live="polite"></p>
+            </form>
         </section>
     </main>
 

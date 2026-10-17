@@ -28,6 +28,20 @@ const capError = document.getElementById('cap-error');
 const capPolite = document.getElementById('cap-polite');
 const capAssertive = document.getElementById('cap-assertive');
 const CAP_KEY = 'finance-tracker:cap';
+const settingsForm = document.getElementById('settings-form');
+const baseCodeInput = document.getElementById('base-code');
+const baseCodeError = document.getElementById('base-code-error');
+const codeIInput = document.getElementById('codeI');
+const codeIError = document.getElementById('codeI-error');
+const rateIInput = document.getElementById('rateI')
+const rateIError = document.getElementById('rateI-error')
+const codeIIInput = document.getElementById('codeII')
+const codeIIError = document.getElementById('codeII-error');
+const rateIIInput = document.getElementById('rateII');
+const rateIIError = document.getElementById('rateII-error');
+const settingsStatus = document.getElementById('settings-status');
+const currencyNote = document.getElementById('currency-note');
+const SETTINGS_KEY = 'finance-tracker: settings';
 
 let records = [];
 let sortField = '';
@@ -35,6 +49,14 @@ let sortDirection = 'asc';
 let searchRegex = null;
 let editingId = null;
 let spendingCap = null;
+let settings = {
+    baseCode: 'RWF',
+    codeI: 'KES',
+    rateI: 0.088,
+    codeII: 'USD',
+    rateII: 0.00068
+
+};
 
 function createRecord() {
     const rightNow = new Date();
@@ -384,6 +406,7 @@ function updateDashboard() {
     statWeek.textContent = weeklyTotal.toFixed(2);
 
     updateCapMessage(total);
+    updateCurrencyNote(total);
 }
 
 function saveCap() {
@@ -432,6 +455,132 @@ function handleCapInput() {
     }
 }
 capInput.addEventListener('input', handleCapInput);
+
+function updateCurrencyNote(total) {
+    const convertedI = total * settings.rateI;
+    const convertedII = total * settings.rateII;
+    currencyNote.textContent = 'Your amount is in ' + settings.baseCode + '. Your total ' + convertedI.toFixed(2) + ' ' + settings.codeI + ' or ' + convertedI.toFixed(2) + ' ' + settings.codeII + '.';
+}
+
+function saveSettings() {
+    try {
+        const text = JSON.stringify(settings);
+        localStorage.setItem(SETTINGS_KEY, text);
+    } catch (error) {
+        console.log('Could not save settings', error);
+    }
+}
+
+function fillSettingsForm() {
+    baseCodeInput.value = settings.baseCode;
+    codeIInput.value = settings.codeI;
+    rateIInput.value = settings.rateI;
+    codeIIInput.value = settings.codeII;
+    rateIIInput.value = settings.rateII;
+
+}
+
+function loadSettings() {
+    try {
+        const text = localStorage.getItem(SETTINGS_KEY);
+        if (text !== null) {
+            settings = JSON.parse(text);
+        }
+    } catch (error) {
+        console.log('Could not read settings', error);
+    }
+    fillSettingsForm();
+}
+
+function validateBaseCode() {
+    const text = baseCodeInput.value;
+    const matchRule = rules.currency.pattern.test(text);
+    let isValid = true;
+    if (matchRule === false) {
+        baseCodeError.textContent = rules.currency.message;
+        isValid = false;
+    } else {
+        baseCodeError.textContent = '';
+    }
+    return isValid;
+}
+
+function validateCodeI() {
+    const text = codeIInput.value;
+    const matchRule = rules.currency.pattern.test(text);
+    let isValid = true;
+    if (matchRule === false) {
+        codeIError.textContent = rules.currency.message;
+        isValid = false;
+    } else {
+        codeIError.textContent = '';
+    }
+    return isValid;
+}
+
+function validateRateI() {
+    const text = rateIInput.value;
+    const matchRule = rules.currency.pattern.test(text);
+    let isValid = true;
+    if (matchRule === false) {
+        rateIError.textContent = rules.currency.message;
+        isValid = false;
+    } else if (Number(text) === 0) {
+        rateIError.textContent = "A rate cannot be zero.";
+        isValid = false;
+    } else {
+        rateIError.textContent = '';
+    }
+    return isValid;
+}
+
+function validateCodeII() {
+    const text = codeIIInput.value;
+    const matchRule = rules.currency.pattern.test(text);
+    let isValid = true;
+    if (matchRule === false) {
+        codeIIError.textContent = rules.currency.message;
+        isValid = false;
+    } else {
+        codeIIError.textContent = '';
+    }
+    return isValid;
+}
+
+function validaterateII() {
+    const text = rateIIInput.value;
+    const matchRule = rules.currency.pattern.test(text);
+    let isValid = true;
+    if (matchRule === false) {
+        rateIIError.textContent = rules.currency.message;
+        isValid = false;
+    } else {
+        rateIIError.textContent = '';
+    }
+    return isValid;
+}
+
+function  handleSettingsSubmit(event) {
+    event.preventDefault();
+    const basePerf = validateBaseCode();
+    const codeIPerf = validateCodeI();
+    const rateIPerf = validateRateI();
+    const codeIIPerf = validateCodeII();
+    const rateIIPerf = validateRateII();
+    if (basePerf === true && codeIPerf === true && rateIPerf === true && codeIIPerf === true && rateIIPerf === true) {
+        settings.baseCode = baseCodeInput.value;
+        settings.codeIPerf = codeIInput.value;
+        settings.rateI = Number(rateIInput.value);
+        settings.codeII = codeIIInput.value;
+        settings.rateII = Number(rateIIInput.value);
+        saveSettings();
+        updateDashboard();
+        settingsStatus.textContent = 'Settings are saved.';
+    } else {
+        settingsStatus.textContent = 'Please fix the errors above.';
+    }
+}
+settingsForm.addEventListener('submit', handleSettingsSubmit);
 
 function renderTable() {
     recordsBody.innerHTML = '';
@@ -545,6 +694,7 @@ function loadSavedRecords() {
 }
 
 async function startApp() {
+    loadSettings();
     loadCap();
     const savedList = loadSavedRecords();
     if (savedList !== null) {
