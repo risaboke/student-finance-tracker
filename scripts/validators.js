@@ -17,14 +17,14 @@ export const rules = {
     },
     currency: {
         pattern: /^[A-Z]{3}$/,
-        message: "Use a 3-letter currency code, e.g., KES"
-    },
-    rate: {
-        pattern:/^(0|[1-9]\d*)(\.\d{1,6})?%/,
-        message: "Enter a number like 0.82 or 1230.4"
+        message: "Use a 3-letter currency code in capitals, e.g., KES"
     },
     duplicateWord: {
     pattern: /\b(\w+)\s+\1\b/i,
     message: "Looks like you repeated a word. Give that description another look!"
-    }
+    },
+    rate: {
+        pattern:/^(0|[1-9]\d*)(\.\d{1,6})?$/,
+        message: "Enter a number like 0.82 or 1230.4."
+    },
 };

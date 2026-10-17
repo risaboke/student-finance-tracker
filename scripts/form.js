@@ -459,7 +459,7 @@ capInput.addEventListener('input', handleCapInput);
 function updateCurrencyNote(total) {
     const convertedI = total * settings.rateI;
     const convertedII = total * settings.rateII;
-    currencyNote.textContent = 'Your amount is in ' + settings.baseCode + '. Your total ' + convertedI.toFixed(2) + ' ' + settings.codeI + ' or ' + convertedI.toFixed(2) + ' ' + settings.codeII + '.';
+    currencyNote.textContent = 'Your amount is in ' + settings.baseCode + '. Your total ' + convertedI.toFixed(2) + ' ' + settings.codeI + ' or  ' + convertedI.toFixed(2) + ' ' + settings.codeII + '.';
 }
 
 function saveSettings() {
@@ -520,10 +520,10 @@ function validateCodeI() {
 
 function validateRateI() {
     const text = rateIInput.value;
-    const matchRule = rules.currency.pattern.test(text);
+    const matchRule = rules.rate.pattern.test(text);
     let isValid = true;
     if (matchRule === false) {
-        rateIError.textContent = rules.currency.message;
+        rateIError.textContent = rules.rate.message;
         isValid = false;
     } else if (Number(text) === 0) {
         rateIError.textContent = "A rate cannot be zero.";
@@ -547,14 +547,16 @@ function validateCodeII() {
     return isValid;
 }
 
-function validaterateII() {
+function validateRateII() {
     const text = rateIIInput.value;
-    const matchRule = rules.currency.pattern.test(text);
+    const matchRule = rules.rate.pattern.test(text);
     let isValid = true;
     if (matchRule === false) {
-        rateIIError.textContent = rules.currency.message;
+        rateIIError.textContent = rules.rate.message;
         isValid = false;
-    } else {
+    } else if (Number(text) === 0) {
+        rateIIError.textContent = "A rate cannot be zero" 
+    }else {
         rateIIError.textContent = '';
     }
     return isValid;
