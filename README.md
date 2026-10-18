@@ -91,7 +91,7 @@ To test import, use the files in `assets/`: `invalid-sample.json`, `not-json.jso
 ## CodeVibe tracker
 - Installed on: [15-10-2026]
 - Crashed on: [17-10-2026]
-- My commit history shows when I reached each milestone: [CHECK WITH `git log` BEFORE YOU WRITE WHICH ONES]
+- My commit history shows when I reached each milestone: [M1, M2, M3, M4, M6(see git log)]
 
 ![CodeVibe crash message in VS Code](docs/codevibe-crash-ev1.jpeg)
 ![CodeVibe crash message in VS Code](docs/codevibe-crash-ev2.jpeg)
