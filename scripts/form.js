@@ -45,8 +45,8 @@ const SETTINGS_KEY = 'finance-tracker: settings';
 const exportButton = document.getElementById('export-button');
 const importInput = document.getElementById('import-input');
 const dataStatus = document.getElementById('data-status');
-const tideChart = document.getElementById('tide-chart');
-const tideSummary = document.getElementById('tide-summary');
+const trendChart = document.getElementById('trend-chart');
+const trendSummary = document.getElementById('trend-summary');
 
 let records = [];
 let sortField = '';
@@ -433,6 +433,7 @@ function updateDashboard() {
 
     updateCapMessage(total);
     updateCurrencyNote(total);
+    drawTrendChart();
 }
 
 function saveCap() {
@@ -676,7 +677,7 @@ async function handleImport(event) {
     }
 importInput.addEventListener('change', handleImport);
 
-function totalHeyday(dateText) {
+function totalForDay(dateText) {
     let dayTotal = 0;
     for (let i = 0; i < records.length; i++)  {
         if (records[i].date === dateText){
@@ -697,6 +698,16 @@ function calculateDailyTotals() {
     return totals;
 }
 
+function findBiggest(numbers) {
+    let biggest = 0;
+    for (let i = 0; i < numbers.length; i++) {
+        if (numbers[i] > biggest) {
+            biggest = numbers[i];
+        }
+    }
+    return biggest;
+}
+
 function calculateBarHeight(dayTotal, biggest) {
     let barHeight = 2;
     if (biggest > 0) {
@@ -715,27 +726,34 @@ function makeBarItem(dayText, dayTotal, barHeight) {
     const bar = document.createElement('div');
     const labelText = document.createElement('span');
 
-    valueText.textContent = dayTotal.toFixed(2)
+    valueText.textContent = dayTotal.toFixed(2);
     bar.className = 'bar';
     bar.style.height = barHeight + 'px';
     bar.setAttribute('aria-hidden', 'true');
-    labelText.textContent = dayText.slice(5)
+    labelText.textContent = dayText.slice(5);
+    item.appendChild(valueText);
+    item.appendChild(bar);
+    item.appendChild(labelText);
+
+    return item;
+
 }
 
-function drawTideChart() {
+function drawTrendChart() {
     const days = getLast7Days();
     const totals = calculateDailyTotals();
     const biggest = findBiggest(totals);
-    tideChart.innerHTML = '';
+    trendChart.innerHTML = '';
     for (let i = 0; i < days.length; i++) {
         const barHeight = calculateBarHeight(totals[i], biggest);
         const item = makeBarItem(days[i], totals[i], barHeight);
-        tideChart.appendChild(item);
+        trendChart.appendChild(item);
     }
     if (biggest === 0) {
-        tideSummary.textContent = 'No spending in the last 7 days.';
+        trendSummary.textContent = 'No spending in the last 7 days.';
     } else {
-        tideSummary.textContent = 'Total for the last 7 days: '; + calculateWeeklyTotal().toFixed(2) + '.';
+        weeklyTotal = calculateWeeklyTotal();
+        trendSummary.textContent = 'Total for the last 7 days: '; + WeeklyTotal.toFixed(2) + '.';
     }
 }
 
