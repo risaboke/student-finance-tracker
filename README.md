@@ -3,7 +3,8 @@
 A small web app for a student to log spending, see simple stats, and stay under a spending cap. Built with plain HTML, CSS and JavaScript, with no frameworks.
 
 - **Repo:** https://github.com/risaboke/student-finance-tracker
-- **Live site (GitHub Pages):** [PAGES LINK]
+- **Live site (GitHub Pages):** https://risaboke.github.io/student-finance-tracker/
+- **Regex tests (live):** https://risaboke.github.io/student-finance-tracker/tests.html
 - **Demo video (unlisted):** [VIDEO LINK]
 
 ## Theme
