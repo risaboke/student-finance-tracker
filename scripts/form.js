@@ -45,6 +45,8 @@ const SETTINGS_KEY = 'finance-tracker: settings';
 const exportButton = document.getElementById('export-button');
 const importInput = document.getElementById('import-input');
 const dataStatus = document.getElementById('data-status');
+const tideChart = document.getElementById('tide-chart');
+const tideSummary = document.getElementById('tide-summary');
 
 let records = [];
 let sortField = '';
@@ -322,16 +324,37 @@ function handleEditClick(event) {
 }
 
 //Dashboard: is this within the lat seven days?
-function isInLast7Days(dateText) {
-    const recordDate = new Date(dateText);
-    const today = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(today.getDate() - 7);
+function formatDate(dateObject) {
+    const year = dateObject.getFullYear ();
+    let month = dateObject.getMonth();
+    let day = dateObject.getDate();
+    if (month < 10) {
+        month = '0' + month;
+    }
+    if (day < 10) {
+        day = '0' + day;
+    }
+    return year + '-' + month + '-' + day;
+}
 
+function getLast7Days() {
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+        const daysAgo = 6 - i;
+        const day = new Date();
+        day.setDate(day.getDate() - daysAgo);
+        days.push(formatDate(day));
+    }
+    return days;
+}
+
+function isInLast7Days(dateText) {
+    const lastSevenDays = getLast7Days();
     let isRecent = false;
-    
-    if (recordDate >= sevenDaysAgo && recordDate <= today) {
+    for (let i = 0; i < lastSevenDays.length; i++) {
+        if (lastSevenDays[i] === dateText) {
         isRecent = true;
+        }
     }
     return isRecent;
 }
@@ -652,6 +675,69 @@ async function handleImport(event) {
         }
     }
 importInput.addEventListener('change', handleImport);
+
+function totalHeyday(dateText) {
+    let dayTotal = 0;
+    for (let i = 0; i < records.length; i++)  {
+        if (records[i].date === dateText){
+            dayTotal = dayTotal + records[i].amount;
+
+        }
+    }
+    return dayTotal;
+}
+
+function calculateDailyTotals() {
+    const days = getLast7Days();
+    const totals = [];
+    for (let i =0; i < days.length; i++) {
+        const dayTotal = totalForDay(days[i]);
+        totals.push(dayTotal);
+    }
+    return totals;
+}
+
+function calculateBarHeight(dayTotal, biggest) {
+    let barHeight = 2;
+    if (biggest > 0) {
+        const share = dayTotal / biggest;
+        barHeight = Math.round(share * 120);
+    }
+    if (barHeight < 2) {
+        barHeight = 2;
+    }
+    return barHeight;
+}
+
+function makeBarItem(dayText, dayTotal, barHeight) {
+    const item = document.createElement('li');
+    const valueText = document.createElement('span');
+    const bar = document.createElement('div');
+    const labelText = document.createElement('span');
+
+    valueText.textContent = dayTotal.toFixed(2)
+    bar.className = 'bar';
+    bar.style.height = barHeight + 'px';
+    bar.setAttribute('aria-hidden', 'true');
+    labelText.textContent = dayText.slice(5)
+}
+
+function drawTideChart() {
+    const days = getLast7Days();
+    const totals = calculateDailyTotals();
+    const biggest = findBiggest(totals);
+    tideChart.innerHTML = '';
+    for (let i = 0; i < days.length; i++) {
+        const barHeight = calculateBarHeight(totals[i], biggest);
+        const item = makeBarItem(days[i], totals[i], barHeight);
+        tideChart.appendChild(item);
+    }
+    if (biggest === 0) {
+        tideSummary.textContent = 'No spending in the last 7 days.';
+    } else {
+        tideSummary.textContent = 'Total for the last 7 days: '; + calculateWeeklyTotal().toFixed(2) + '.';
+    }
+}
 
 function renderTable() {
     recordsBody.innerHTML = '';
