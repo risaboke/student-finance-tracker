@@ -11,7 +11,7 @@ A small web app for a student to log spending, see simple stats, and stay under 
 I chose the **Student Finance Tracker** project because it seems quite challenging and would test and grow my JavaScript skills - I also do enjoy making tables using HTML, so this project was a mix of things I like doing and want to learn to integrate into my work. Also, it did help that the summative brief included starter regex patterns and seed examples for it. In this project, the currency settings use Rwandan francs, Kenyan shillings and US dollars, with typed in rates.
 
 ## Features
-- Add, edit and delete transactions, with every field checked by regexj
+- Add, edit and delete transactions, with every field checked by regex
 - Table with sorting by description, amount, category and date (click a header again to reverse)
 - Live regex search with a case-sensitive toggle and highlighted matches, and an "invalid pattern" message instead of a crash
 - Dashboard: total records, total spent, top category, last-7-days total, and a 7-day bar chart
@@ -37,8 +37,6 @@ Each pattern is in `scripts/validators.js` and tested in `tests.html`.
   Accepts `USD` and `RWF`. Rejects `usd` and `US`.
 - **Exchange rate:** `/^(0|[1-9]\d*)(\.\d{1,6})?$/`
   Accepts `0.92`, `1450.5` and `0.00068`. Rejects `abc` and `0.1234567`. A rate of zero is rejected in JavaScript.
-
-The description pattern uses lookaheads and a lookbehind. The amount, category, date and duplicate-word patterns started from the assignment's starter snippets.
 
 ## Keyboard map
 | Key | What it does |
@@ -92,7 +90,7 @@ To test import, use the files in `assets/`: `invalid-sample.json`, `not-json.jso
 ## CodeVibe tracker
 - Installed on: [15-10-2026]
 - Crashed on: [17-10-2026]
-- My commit history shows when I reached each milestone: [M1, M2, M3, M4, M6(see git log)]
+- My commit history shows when I reached each milestone: [M1, M2, M3, M4, M6 (see git log)]
 
 ![CodeVibe crash message in VS Code](docs/codevibe-crash-ev1.jpeg)
 ![CodeVibe crash message in VS Code](docs/codevibe-crash-ev2.jpeg)
