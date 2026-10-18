@@ -2,7 +2,7 @@
     --soft-linen: #e7e0d6;
     --lemon-tart: #e6d389;
     --dry-sage: #aea989;
-    --orange: #fb5607;
+    --crimson: #b3360a;
     --smoked-mauve: #68525c;
     --violet-dusk: #502d55;
     --midnight-violet: #261732;
@@ -75,7 +75,7 @@ nav a:hover {
 }
 .error {
     display: block;
-    color: var(--orange);
+    color: var(--crimson);
     font-size: 0.9rem;
 }
 .table-wrap {
@@ -126,7 +126,7 @@ td button {
     font-weight: bold;
 }
 #cap-assertive {
-    color: var(--orange);
+    color: var(--crimson);
     font-weight: bold;
 }
 form div,
@@ -163,9 +163,44 @@ form button {
   font-weight: bold;
 }
 .fail {
-  color: var(--orange);
+  color: var(--crimson);
   font-weight: bold;
 }
 #results td{
   white-space: pre-wrap;
+}
+.tide {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.bars li {
+  flex: 1;
+  min-width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.bar {
+  width: 100%;
+  background: var(--violet-dusk);
+  border-radius: 4px 4px 0 0;
+  transform-origin: bottom;
+  animation: grow 0.4s ease;
+}
+@keyframes grow {
+  from {transform: scaleY(0);}
+  to {transform:scaleY(1);}
+}
+@media (prefers-reduced-motion: reduce) {
+  .bar {animation: none;}
 }

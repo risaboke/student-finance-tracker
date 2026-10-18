@@ -325,8 +325,8 @@ function handleEditClick(event) {
 
 //Dashboard: is this within the lat seven days?
 function formatDate(dateObject) {
-    const year = dateObject.getFullYear ();
-    let month = dateObject.getMonth();
+    const year = dateObject.getFullYear();
+    let month = dateObject.getMonth() + 1;
     let day = dateObject.getDate();
     if (month < 10) {
         month = '0' + month;
