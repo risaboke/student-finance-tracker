@@ -5,13 +5,13 @@ A small web app for a student to log spending, see simple stats, and stay under 
 - **Repo:** https://github.com/risaboke/student-finance-tracker
 - **Live site (GitHub Pages):** https://risaboke.github.io/student-finance-tracker/
 - **Regex tests (live):** https://risaboke.github.io/student-finance-tracker/tests.html
-- **Demo video (unlisted):** [VIDEO LINK]
+- **Demo video (unlisted):** (https://youtu.be/cRD3mYXnOrc)
 
 ## Theme
 I chose the **Student Finance Tracker** project because it seems quite challenging and would test and grow my JavaScript skills - I also do enjoy making tables using HTML, so this project was a mix of things I like doing and want to learn to integrate into my work. Also, it did help that the summative brief included starter regex patterns and seed examples for it. In this project, the currency settings use Rwandan francs, Kenyan shillings and US dollars, with typed in rates.
 
 ## Features
-- Add, edit and delete transactions, with every field checked by regex
+- Add, edit and delete transactions, with every field checked by regexj
 - Table with sorting by description, amount, category and date (click a header again to reverse)
 - Live regex search with a case-sensitive toggle and highlighted matches, and an "invalid pattern" message instead of a crash
 - Dashboard: total records, total spent, top category, last-7-days total, and a 7-day bar chart
