@@ -4,14 +4,14 @@ I drew the wireframes by hand and took photos of both layouts. I wrote up these 
 
 ## Mobile (single column)
 
-(../assets/mobile-view-p1.jpeg)
-(../assets/mobile-view-p2.jpeg)
-(../assets/mobile-view-p3.jpeg)
+![Mobile view](../assets/mobile-view-p1.jpeg)
+![Mobile view](../assets/mobile-view-p2.jpeg)
+![Mobile view](../assets/mobile-view-p3.jpeg)
 
 ## Desktop (centered column)
 
-(../assets/desktop-view-p1.jpeg)
-(../assets/desktop-view-p2.jpeg)
+![Desktop view](../assets/desktop-view-p1.jpeg)
+![Desktop view](../assets/desktop-view-p2.jpeg)
 
 ## Layout notes
 
