@@ -15,9 +15,9 @@ I drew the wireframes by hand and took photos of both layouts. I wrote up these 
 
 ## Layout notes
 
--I started with a mobile layout, where everything is in one column. At 768px and 1024px, the layout adjusts to fit wider screens.
--The page use one continuous scroll with five sections: About, Dashboard, Records, Add/Edit Transaction, and Settings.
--On smaller screens, the table can scroll sideways inside its own container - this keeps the whole page from scrolling horizontally. 
+- I started with a mobile layout, where everything is in one column. At 768px and 1024px, the layout adjusts to fit wider screens.
+- The page use one continuous scroll with five sections: About, Dashboard, Records, Add/Edit Transaction, and Settings.
+- On smaller screens, the table can scroll sideways inside its own container - this keeps the whole page from scrolling horizontally. 
 
 ## Tab order
 
