@@ -158,3 +158,14 @@ form button {
   display: block;
   margin-top: 0.75rem;
 }
+.pass {
+  color: #1b5e20;
+  font-weight: bold;
+}
+.fail {
+  color: var(--orange);
+  font-weight: bold;
+}
+#results td{
+  white-space: pre-wrap;
+}

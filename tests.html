@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regex Tests for Student Finance Tracker</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <main id="main">
+        <h1>Regex Tests</h1>
+        <p><a href="index.html">Back to the tracker</a></p>
+        <p id="summary" aria-live="polite"></p>
+        <div class="table-wrap">
+            <table>
+                <caption>Each row tests one value against one rule</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Rule</th>
+                        <th scope="col">Test value</th>
+                        <th scope="col">Should it match?</th>
+                        <th scope="col">Result</th>
+                    </tr>
+                </thead>
+                <tbody id="results"></tbody>
+            </table>
+        </div>
+    </main>
+    <script type="module" src="scripts/tests.js"></script>
+</body>
+</html>

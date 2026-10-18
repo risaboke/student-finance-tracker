@@ -1,0 +1,3 @@
+## My known limitations
+- Editing records: When I click Edit, the record details are loaded into the form. When I save the changes, the existing record is updated using its id instead of creating a new one. I also update its updateAt value to show when it was last changed. I chose this approach so edits go through the same regex validation as new records without duplicating the validation code. The downside is that editing happens in the form instead of directly inside the table, and I have not added a cancel button yet.
+- Deleting records: When I delete a transaction, the selected record is removed from the data. This makes sure I remove the transaction I intended to delete without affecting the other records. 

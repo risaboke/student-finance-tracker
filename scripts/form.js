@@ -462,7 +462,7 @@ capInput.addEventListener('input', handleCapInput);
 function updateCurrencyNote(total) {
     const convertedI = total * settings.rateI;
     const convertedII = total * settings.rateII;
-    currencyNote.textContent = 'Your amount is in ' + settings.baseCode + '. Your total ' + convertedI.toFixed(2) + ' ' + settings.codeI + ' or  ' + convertedI.toFixed(2) + ' ' + settings.codeII + '.';
+    currencyNote.textContent = 'Your amount is in ' + settings.baseCode + '. Your total is ' + convertedI.toFixed(2) + ' ' + settings.codeI + ' or  ' + convertedII.toFixed(2) + ' ' + settings.codeII + '.';
 }
 
 function saveSettings() {
@@ -601,19 +601,19 @@ function exportRecords() {
 exportButton.addEventListener('click', exportRecords);
 
 function checkImportedRecord(record) {
-let problem = '';
-if (record.id === undefined) {
-    problem = 'has no id'
-} else if (record.description === undefined || record.description === '') {
-    problem = 'has no description';
-}else if (typeof record.amount !== 'number' || record.amount < 0) {
-    problem = 'has an amount that is not a valid number';
-} else if (record.category === undefined || rules.category.pattern.test(record.category) === false) {
-    problem = 'has an invalid category';
-} else if (record.date === undefined || rules.date.pattern.test(record.date) === false) {
-    problem = 'has a date that is not in the format YYYY-MM-DD';
-}
-return problem;
+    let problem = '';
+    if (record.id === undefined) {
+        problem = 'has no id';
+    } else if (record.description === undefined || record.description === '') {
+        problem = 'has no description';
+    }else if (typeof record.amount !== 'number' || record.amount < 0) {
+        problem = 'has an amount that is not a valid number';
+    } else if (record.category === undefined || rules.category.pattern.test(record.category) === false) {
+        problem = 'has an invalid category';
+    } else if (record.date === undefined || rules.date.pattern.test(record.date) === false) {
+        problem = 'has a date that is not in the format YYYY-MM-DD';
+    }
+    return problem;
 }
 
 async function handleImport(event) {
