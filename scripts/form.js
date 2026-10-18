@@ -752,8 +752,8 @@ function drawTrendChart() {
     if (biggest === 0) {
         trendSummary.textContent = 'No spending in the last 7 days.';
     } else {
-        weeklyTotal = calculateWeeklyTotal();
-        trendSummary.textContent = 'Total for the last 7 days: '; + WeeklyTotal.toFixed(2) + '.';
+        const weeklyTotal = calculateWeeklyTotal();
+        trendSummary.textContent = 'Total for the last 7 days: '; + weeklyTotal.toFixed(2) + '.';
     }
 }
 
