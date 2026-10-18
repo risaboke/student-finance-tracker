@@ -1,4 +1,4 @@
-import {rules} from './validators.js';
+import { rules } from './validators.js';
 
 const STORAGE_KEY = 'finance-tracker:records';
 const form = document.getElementById('transaction-form');
@@ -41,7 +41,7 @@ const rateIIInput = document.getElementById('rateII');
 const rateIIError = document.getElementById('rateII-error');
 const settingsStatus = document.getElementById('settings-status');
 const currencyNote = document.getElementById('currency-note');
-const SETTINGS_KEY = 'finance-tracker: settings';
+const SETTINGS_KEY = 'finance-tracker:settings';
 const exportButton = document.getElementById('export-button');
 const importInput = document.getElementById('import-input');
 const dataStatus = document.getElementById('data-status');
@@ -200,7 +200,7 @@ sortCategoryButton.addEventListener('click', handleSortCategory);
 
 function compileRegex(text, flags) {
     let regex = null;
-    if (text!== '') {
+    if (text !== '') {
         try {
             regex = new RegExp(text, flags);
         } catch (error) {
@@ -239,7 +239,7 @@ function handleSearch() {
     }
     searchRegex = regex;
     renderTable();
-} 
+}
 searchInput.addEventListener('input', handleSearch);
 searchCaseBox.addEventListener('change', handleSearch);
 
@@ -272,7 +272,7 @@ function deleteRecord(id) {
             remaining.push(records[i]);
         }
     }
-    records =remaining;
+    records = remaining;
     if (editingId === id) {
         clearForm();
     }
@@ -302,7 +302,7 @@ function updateRecord(id) {
     const record = findRecordById(id);
     if (record !== null) {
         record.description = descriptionInput.value;
-        record.amount = Number (amountInput.value);
+        record.amount = Number(amountInput.value);
         record.category = categoryInput.value;
         record.date = dateInput.value;
         record.updatedAt = new Date().toISOString();
@@ -353,7 +353,7 @@ function isInLast7Days(dateText) {
     let isRecent = false;
     for (let i = 0; i < lastSevenDays.length; i++) {
         if (lastSevenDays[i] === dateText) {
-        isRecent = true;
+            isRecent = true;
         }
     }
     return isRecent;
@@ -366,17 +366,17 @@ function calculateTotal() {
         total = total + records[i].amount;
     }
     return total;
-} 
+}
 //to find the category spent on the most
 function findTopCategory() {
     const categoryTotals = {};
-    for (let i = 0; i< records.length; i++) {
+    for (let i = 0; i < records.length; i++) {
         const categoryName = records[i].category.toLowerCase();
         //starts at zero 1e
         if (categoryTotals[categoryName] === undefined) {
             categoryTotals[categoryName] = 0;
         }
-            categoryTotals[categoryName] = categoryTotals[categoryName] + records[i].amount;
+        categoryTotals[categoryName] = categoryTotals[categoryName] + records[i].amount;
     }
     let topName = 'None';
     let topAmount = 0;
@@ -406,12 +406,12 @@ function updateCapMessage(total) {
     let assertiveText = '';
 
     if (spendingCap !== null && total > spendingCap) {
-            const over = total - spendingCap;
-            assertiveText = 'Over your cap by ' + over.toFixed(2) + '.';
-        } else if (spendingCap !== null) {
-            const left = spendingCap - total;
-            politeText = 'You have ' + left.toFixed(2) + ' left under your cap.';
-        }
+        const over = total - spendingCap;
+        assertiveText = 'Over your cap by ' + over.toFixed(2) + '.';
+    } else if (spendingCap !== null) {
+        const left = spendingCap - total;
+        politeText = 'You have ' + left.toFixed(2) + ' left under your cap.';
+    }
     //shouldn't repeat
     if (capPolite.textContent !== politeText) {
         capPolite.textContent = politeText;
@@ -582,14 +582,14 @@ function validateRateII() {
         rateIIError.textContent = rules.rate.message;
         isValid = false;
     } else if (Number(text) === 0) {
-        rateIIError.textContent = "A rate cannot be zero" 
-    }else {
+        rateIIError.textContent = "A rate cannot be zero"
+    } else {
         rateIIError.textContent = '';
     }
     return isValid;
 }
 
-function  handleSettingsSubmit(event) {
+function handleSettingsSubmit(event) {
     event.preventDefault();
     const basePerf = validateBaseCode();
     const codeIPerf = validateCodeI();
@@ -613,7 +613,7 @@ settingsForm.addEventListener('submit', handleSettingsSubmit);
 
 function exportRecords() {
     const text = JSON.stringify(records, null, 2);
-    const file = new Blob([text], { type: 'application/json'});
+    const file = new Blob([text], { type: 'application/json' });
     const url = URL.createObjectURL(file);
     const link = document.createElement('a');
     link.href = url;
@@ -630,7 +630,7 @@ function checkImportedRecord(record) {
         problem = 'has no id';
     } else if (record.description === undefined || record.description === '') {
         problem = 'has no description';
-    }else if (typeof record.amount !== 'number' || record.amount < 0) {
+    } else if (typeof record.amount !== 'number' || record.amount < 0) {
         problem = 'has an amount that is not a valid number';
     } else if (record.category === undefined || rules.category.pattern.test(record.category) === false) {
         problem = 'has an invalid category';
@@ -659,28 +659,28 @@ async function handleImport(event) {
                     }
                 }
             }
-                if (problem === '') {
-                    records = imported;
-                    saveRecords();
-                    renderTable();
-                    updateDashboard();
-                    clearForm();
-                    dataStatus.textContent = 'Imported ' + imported.length + ' records.';
-                } else {
-                    dataStatus.textContent = 'Nothing was changed.';
-                } 
-            } catch (error) {
-                dataStatus.textContent = 'Import has failed because that file is not vaild JSON. Nothing was changed';
+            if (problem === '') {
+                records = imported;
+                saveRecords();
+                renderTable();
+                updateDashboard();
+                clearForm();
+                dataStatus.textContent = 'Imported ' + imported.length + ' records.';
+            } else {
+                dataStatus.textContent = 'Nothing was changed.';
             }
-            importInput.value = '';
+        } catch (error) {
+            dataStatus.textContent = 'Import has failed because that file is not vaild JSON. Nothing was changed';
         }
+        importInput.value = '';
     }
+}
 importInput.addEventListener('change', handleImport);
 
 function totalForDay(dateText) {
     let dayTotal = 0;
-    for (let i = 0; i < records.length; i++)  {
-        if (records[i].date === dateText){
+    for (let i = 0; i < records.length; i++) {
+        if (records[i].date === dateText) {
             dayTotal = dayTotal + records[i].amount;
 
         }
@@ -691,7 +691,7 @@ function totalForDay(dateText) {
 function calculateDailyTotals() {
     const days = getLast7Days();
     const totals = [];
-    for (let i =0; i < days.length; i++) {
+    for (let i = 0; i < days.length; i++) {
         const dayTotal = totalForDay(days[i]);
         totals.push(dayTotal);
     }
@@ -762,39 +762,39 @@ function renderTable() {
     for (let i = 0; i < records.length; i++) {
         const record = records[i];
         if (recordMatchesSearch(record) === true) {
-        const row = document.createElement('tr');
-        const descriptionCell = document.createElement('td');
-        const amountCell = document.createElement('td');
-        const categoryCell = document.createElement('td');
-        const dateCell = document.createElement('td');
+            const row = document.createElement('tr');
+            const descriptionCell = document.createElement('td');
+            const amountCell = document.createElement('td');
+            const categoryCell = document.createElement('td');
+            const dateCell = document.createElement('td');
 
-        fillCell(descriptionCell, record.description);
-        fillCell(amountCell, record.amount);
-        fillCell(categoryCell, record.category);
-        fillCell(dateCell, record.date);
+            fillCell(descriptionCell, record.description);
+            fillCell(amountCell, record.amount);
+            fillCell(categoryCell, record.category);
+            fillCell(dateCell, record.date);
 
-        const actionsCell = document.createElement('td');
-        const deleteButton = document.createElement('button');
-        deleteButton.type = 'button';
-        deleteButton.textContent = 'Delete';
-        deleteButton.dataset.id = record.id;
-        deleteButton.setAttribute('aria-label', 'Delete ' + record.description);
-        deleteButton.addEventListener('click', handleDeleteClick);
-        const editButton = document.createElement('button');
-        editButton.type = 'button';
-        editButton.textContent = 'Edit';
-        editButton.dataset.id = record.id;
-        editButton.setAttribute('aria-label', 'Edit' + record.description);
-        editButton.addEventListener('click', handleEditClick);
-        actionsCell.appendChild(editButton);
-        actionsCell.appendChild(deleteButton);
+            const actionsCell = document.createElement('td');
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.textContent = 'Delete';
+            deleteButton.dataset.id = record.id;
+            deleteButton.setAttribute('aria-label', 'Delete ' + record.description);
+            deleteButton.addEventListener('click', handleDeleteClick);
+            const editButton = document.createElement('button');
+            editButton.type = 'button';
+            editButton.textContent = 'Edit';
+            editButton.dataset.id = record.id;
+            editButton.setAttribute('aria-label', 'Edit' + record.description);
+            editButton.addEventListener('click', handleEditClick);
+            actionsCell.appendChild(editButton);
+            actionsCell.appendChild(deleteButton);
 
-        row.appendChild(descriptionCell);
-        row.appendChild(amountCell);
-        row.appendChild(categoryCell);
-        row.appendChild(dateCell);
-        row.appendChild(actionsCell);
-        recordsBody.appendChild(row);
+            row.appendChild(descriptionCell);
+            row.appendChild(amountCell);
+            row.appendChild(categoryCell);
+            row.appendChild(dateCell);
+            row.appendChild(actionsCell);
+            recordsBody.appendChild(row);
         }
     }
 }
@@ -840,8 +840,6 @@ function handleSubmit(event) {
         renderTable();
         updateDashboard();
         clearForm();
-    } else {
-        console.log('Your form is invalid');
     }
 }
 
